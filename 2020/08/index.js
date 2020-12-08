@@ -8,12 +8,11 @@ const getInput = async () => {
   });
 };
 
-const run = (program) => {
+const run = (program, onJump) => {
   let pointer = 0;
   let accumulator = 0;
   let hasLoop = false;
   const hasBeenExecuted = new Set();
-  const jumps = [];
 
   while (pointer < program.length - 1) {
     const instruction = program[pointer];
@@ -32,17 +31,17 @@ const run = (program) => {
         pointer++;
         break;
       case "jmp":
-        jumps.unshift(pointer);
+        onJump && onJump(pointer);
         pointer += value;
         break;
       case "nop":
-        jumps.unshift(pointer);
+        onJump && onJump(pointer);
         pointer++;
         break;
     }
   }
 
-  return [accumulator, hasLoop, jumps];
+  return [accumulator, hasLoop];
 };
 
 const toggleCommand = (program, pointer) => {
@@ -58,7 +57,8 @@ firstPart();
 
 const secondPart = async () => {
   const program = await getInput();
-  const jumps = run(program)[2];
+  const jumps = [];
+  run(program, (pointer) => jumps.unshift(pointer));
 
   for (pointer of jumps) {
     if (program[pointer][0] === "acc") {
