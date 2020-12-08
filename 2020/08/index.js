@@ -57,14 +57,11 @@ firstPart();
 
 const secondPart = async () => {
   const program = await getInput();
+
   const jumps = [];
   run(program, (pointer) => jumps.unshift(pointer));
 
   for (pointer of jumps) {
-    if (program[pointer][0] === "acc") {
-      continue;
-    }
-
     toggleCommand(program, pointer);
     const [accumulator, hasLoop] = run(program);
     toggleCommand(program, pointer);
