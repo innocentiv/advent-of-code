@@ -5,18 +5,16 @@ const getInput = async () => {
   return input.split("\n").map(Number);
 };
 
+const findCoupleToTarget = (input, target) => {
+  const number = input.find((num) => input.includes(target - num));
+  return [number, target - number];
+};
+
 const firstPart = async () => {
   const target = 2020;
   const input = await getInput();
-
-  for (let i = 0; i < input.length; i++) {
-    for (let j = 0; j < input.length; j++) {
-      if (input[i] + input[j] === target) {
-        console.log("first part:", input[i] * input[j]);
-        return;
-      }
-    }
-  }
+  const [a, b] = findCoupleToTarget(input, target);
+  console.log("first part:", a * b);
 };
 
 firstPart();
@@ -24,15 +22,14 @@ firstPart();
 const secondPart = async () => {
   const target = 2020;
   const input = await getInput();
+  console.time("find");
 
-  for (let i = 0; i < input.length; i++) {
-    for (let j = 0; j < input.length; j++) {
-      for (let z = 0; z < input.length; z++) {
-        if (input[i] + input[j] + input[z] === target) {
-          console.log("second part:", input[i] * input[j] * input[z]);
-          return;
-        }
-      }
+  for (const a of input) {
+    const [b, c] = findCoupleToTarget(input, target - a);
+    if (b) {
+      console.log("second part:", a * b * c);
+      console.timeEnd("find");
+      break;
     }
   }
 };
