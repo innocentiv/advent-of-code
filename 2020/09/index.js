@@ -9,9 +9,9 @@ const PREAMBLE_SIZE = 25;
 
 const isNumberValid = (preamble, number) => {
   return preamble.some((num, index) => {
-    const target = number - num;
-    const rest = [...preamble.slice(0, index), ...preamble.slice(index + 1)];
-    return rest.includes(target);
+    const clone = [...preamble];
+    clone.splice(index, 1);
+    return clone.includes(number - num);
   });
 };
 
