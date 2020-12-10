@@ -56,7 +56,7 @@ firstPart();
 
 const secondPart = async () => {
   const input = await getInput();
-  const combinations = [1, ...input].reduce((acc, num, index, array) => {
+  const combinations = [0, ...input].reduce((acc, num, index, array) => {
     if (index === 0) {
       acc.push(1);
     } else if (index === 1) {
